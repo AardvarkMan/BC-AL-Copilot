@@ -1,6 +1,6 @@
 {
   "country": "us",
-  "appFolders": [],
+  "appFolders": ["Copilot Demo"],
   "testFolders": [],
   "bcptTestFolders": []
 }
