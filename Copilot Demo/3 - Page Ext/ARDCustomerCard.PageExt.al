@@ -5,6 +5,7 @@ pageextension 50000 ARD_CustomerCard extends "Customer Card"
         addbefore(Email_Promoted)
         {
             actionref(GenerateAddress_Pro; GenerateAddress){}
+            actionref(GenerateReminder_Pro; GenerateReminder){}
         }
 
         addbefore(Email)
@@ -32,6 +33,31 @@ pageextension 50000 ARD_CustomerCard extends "Customer Card"
                             if AddressDict.ContainsKey('postalcode') then Rec."Post Code" := AddressDict.Get('postalcode');
                             if AddressDict.ContainsKey('phone') then Rec."Phone No." := AddressDict.Get('phone');
                             if AddressDict.ContainsKey('email') then Rec."E-Mail" := AddressDict.Get('email');
+                        end;
+                    end;
+                end;
+            }
+            //Added in https://aardvarklabs.blog/2025/05/27/creating-data-driven-text-with-ai-in-business-central/
+            action(GenerateReminder)
+            {
+                ApplicationArea = All;
+                Caption = 'Generate Reminder';
+                ToolTip = 'Generate reminder using Dynamics 365 Copilot.';
+                Image = Sparkle;
+                trigger OnAction()
+                var
+                    GenerateReminder: PAge ARDReminderPrompt;
+                    ReminderText: Text;
+                begin
+                    // Open the reminder generation process
+                    GenerateReminder.SetCustomer(Rec."No.");
+                    if GenerateReminder.RunModal() = Action::OK then begin
+                        ReminderText := GenerateReminder.GetResult();
+                        if ReminderText <> '' then begin
+                            // Display the generated reminder text
+                            Message('Generated Reminder: %1', ReminderText);
+                        end else begin
+                            Error('No reminder text generated.');
                         end;
                     end;
                 end;

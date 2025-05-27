@@ -10,17 +10,17 @@ codeunit 50002 ARD_IsolatedStorageWrapper
 
     procedure GetSecretKey() SecretKey: Text
     begin
-        IsolatedStorage.Get(IsolatedStorageSecretKeyKey, SecretKey);
+        if IsolatedStorage.Get(IsolatedStorageSecretKeyKey, SecretKey) = false then SecretKey := '';
     end;
 
     procedure GetDeployment() Deployment: Text
     begin
-        IsolatedStorage.Get(IsolatedStorageDeploymentKey, Deployment);
+        if IsolatedStorage.Get(IsolatedStorageDeploymentKey, Deployment) = false then Deployment := '';
     end;
 
     procedure GetEndpoint() Endpoint: Text
     begin
-        IsolatedStorage.Get(IsolatedStorageEndpointKey, Endpoint);
+        if IsolatedStorage.Get(IsolatedStorageEndpointKey, Endpoint) = false then Endpoint := '';
     end;
 
     procedure SetSecretKey(SecretKey: Text)
