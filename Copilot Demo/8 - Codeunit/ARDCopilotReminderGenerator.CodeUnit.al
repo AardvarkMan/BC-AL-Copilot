@@ -1,7 +1,7 @@
 // <summary>
 /// Runs the generation process for address proposals using Dynamics 365 Copilot.
 /// https://aardvarklabs.blog/2025/05/27/creating-data-driven-text-with-ai-in-business-central/
-/// </summary>
+// </summary>
 codeunit 50003 ARD_CopilotReminderGenerator
 {
     trigger OnRun()
