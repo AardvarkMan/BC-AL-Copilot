@@ -22,7 +22,7 @@ codeunit 50005 ARD_AddressMatchFinder
     /// Retrieves the dictionary containing address details generated from the user prompt.
     /// </summary>
     /// <returns>
-    /// A dictionary of key-value pairs representing address details.
+    /// Text of JSON REsults
     /// </returns>
     procedure GetResult(): Text
     begin
