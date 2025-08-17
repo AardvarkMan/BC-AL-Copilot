@@ -14,6 +14,28 @@ page 50000 ARD_CopilotSettings
             {
                 Caption = 'General';
 
+                field(UseManagedResources; UseManagedResources)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Use Managed Resources';
+                    ToolTip = 'Enable to use managed resources for Copilot services.';
+                    trigger OnValidate()
+                    begin
+                        IsolatedStorageWrapper.SetUseManagedResources(UseManagedResources);
+                    end;
+                }
+                field(accountName; AccountName)
+                {
+                    ApplicationArea = All;
+                    Caption = 'AOAI Account Name';
+                    ToolTip = 'Enter the Azure OpenAI account name.';
+
+                    trigger OnValidate()
+                    begin
+                        IsolatedStorageWrapper.SetAOAIAccountName(AccountName);
+                    end;
+                }
+
                 field(Endpoint; Endpoint)
                 {
                     ApplicationArea = All;
@@ -52,9 +74,11 @@ page 50000 ARD_CopilotSettings
     }
 
     var
+    AccountName: Text;
     Endpoint: Text;
     Deployment: Text;
     UserAPIKey: Text;
+    UseManagedResources: Boolean;
     IsolatedStorageWrapper: Codeunit ARD_IsolatedStorageWrapper;
     
     trigger OnAfterGetRecord()
@@ -67,5 +91,7 @@ page 50000 ARD_CopilotSettings
     begin
         Deployment := IsolatedStorageWrapper.GetDeployment();
         Endpoint := IsolatedStorageWrapper.GetEndpoint();
+        UseManagedResources := IsolatedStorageWrapper.GetUseManagedResources();
+        AccountName := IsolatedStorageWrapper.GetAOAIAccountName();
     end;
 }
