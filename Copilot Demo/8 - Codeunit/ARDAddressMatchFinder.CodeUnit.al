@@ -68,9 +68,9 @@ codeunit 50005 ARD_AddressMatchFinder
          IsolatedStorageWrapper.GetEndpoint(), IsolatedStorageWrapper.GetDeployment(), IsolatedStorageWrapper.GetSecretKey());*/
 
         // Set up Azure OpenAI authorization using isolated storage values, use the Managed Resource Authorization
-        AzureOpenAI.SetManagedResourceAuthorization(Enum::"AOAI Model Type"::"Chat Completions", 
+        AzureOpenAI.SetManagedResourceAuthorization(Enum::"AOAI Model Type"::"Chat Completions",
         IsolatedStorageWrapper.GetAOAIAccountName(), IsolatedStorageWrapper.GetSecretKey(), AoaiDeployments.GetGPT41Latest());
-        
+
 
         // Set the Copilot capability for customer detail processing
         AzureOpenAI.SetCopilotCapability(Enum::"Copilot Capability"::"Customer Detail");
@@ -83,7 +83,7 @@ codeunit 50005 ARD_AddressMatchFinder
         // Add system and user messages to the chat
         AOAIChatMessages.AddSystemMessage(ChatSystemPrompt); // Add the system prompt
         AOAIChatMessages.AddUserMessage(ChatUserPrompt); // Add the user prompt
-        
+
         // Generate the chat completion using Azure OpenAI
         AzureOpenAI.GenerateChatCompletion(AOAIChatMessages, AOAIChatCompletionParams, AOAIOperationResponse);
 
@@ -100,25 +100,34 @@ codeunit 50005 ARD_AddressMatchFinder
     local procedure GetSystemPrompt() SystemPrompt: Text
     begin
         // Define the system prompt that instructs the AI on how to process the user's input
-        SystemPrompt := @'A JSON list of addresses will be provided, and your task is to find the address that best matches the address with addressno "user".
-        All the addresses will be in an JSON object with an array of JSON objects with the following fields:
-        addressno, addressline1, addressline2, city, state, country, postalCode.
-        The address with addressid = user will be the address provided by the user for which the best match is to be found.
-        You will return a JSON object named "results" with an array of JSON objects containing the addressno of each address in the array, except the address with addressno = user.
-        Each address in the array will have the following fields: addressno, percentageMatch.
-        The resultant JSON object should look like this:
+        SystemPrompt := @'You are a professional postal worker.
+A list of addresses will be provided, and your task is to find the address that best matches the address with addressno "user".
+The matching criteria is based on the ability of the postal service to deliver mail to the user address.
+Differences between abreviated and full forms of the address state should not be considered.
+Differences between the abreviated and full forms of street desginations should not be considered.
+Differences in the order of the address lines should not be considered.
+Differences in states designations with matching postal codes should be considered highly not matching.
+All the addresses will be in an JSON object with an array of JSON objects with the following fields:
+addressno, addressline1, addressline2, city, state, country, postalCode.
+The address with addressid = user will be the address provided by the user for which the best match is to be found.
+You will return a JSON object named "results" with an array of JSON objects containing the addressno of each address in the array, except the address with addressno = user.
+Each address in the array will have the following fields: addressno, percentageMatch.
+The resultant JSON object should look like this:
+{
+    "results": [
         {
-            "results": [
-                {
-                    "addressno": "address1",
-                    "percentageMatch": 0.95
-                },
-                {
-                    "addressno": "address2",
-                    "percentageMatch": 0.90
-                }
-            ]
-        }';
+            "addressno": "address1",
+            "percentageMatch": 0.95
+        },
+        {
+            "addressno": "address2",
+            "percentageMatch": 0.90
+        }
+    ]
+}
+The percentageMatch is a number between 0 and 1, where 1 is a perfect match and 0 is no match at all.
+The address with the highest percentageMatch should be considered the best match.
+The address with the highest percentageMatch should be returned first in the array.';
     end;
 
     var

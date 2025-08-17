@@ -28,7 +28,7 @@ pageextension 50002 ARD_SalesQuote extends "Sales Quote"
                             Rec."Ship-to Address",
                             Rec."Ship-to Address 2",
                             Rec."Ship-to City",
-                            Rec."Sell-to County",
+                            Rec."Ship-to County",
                             Rec."Ship-to Country/Region Code",
                             Rec."Ship-to Post Code"
                         );

@@ -17,7 +17,7 @@ page 50005 ARD_ValidateAddressPrompt
                 MultiLine = true;
                 ApplicationArea = All;
                 InstructionalText = 'Provide any address details.';
-
+                Editable = false;
                 trigger OnValidate()
                 begin
                     CurrPage.Update();
@@ -131,15 +131,18 @@ page 50005 ARD_ValidateAddressPrompt
     end;
 
     procedure SetCurrentAddress(addressline1: Text; addressline2: Text; city: Text; state: Text; country:Text; postalCode: Text)
+    var
+        Address: TextBuilder;
     begin
-        /* Clear(SourceAddress);
-        SourceAddress.Add('AddressNo', 'user');
-        SourceAddress.Add('AddressLine1', addressline1);
-        SourceAddress.Add('AddressLine2', addressline2);
-        SourceAddress.Add('City', city);
-        SourceAddress.Add('State', state);
-        SourceAddress.Add('Country', country);
-        SourceAddress.Add('PostalCode', postalCode); */
+        if addressline1 <> '' then Address.AppendLine(addressline1);
+        if addressline2 <> '' then Address.AppendLine(addressline2);
+        if city <> '' then Address.AppendLine(city);
+        if state <> '' then  Address.AppendLine(state);
+        if country <> '' then Address.AppendLine(country);
+        if postalCode <> '' then Address.AppendLine(postalCode);
+        
+        ChatRequest := Address.ToText();
+
         AddTestAddress('user', addressline1, addressline2, city, state, country, postalCode);
     end;
 
