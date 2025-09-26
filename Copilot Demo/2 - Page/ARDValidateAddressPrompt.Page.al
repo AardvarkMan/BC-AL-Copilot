@@ -146,6 +146,7 @@ page 50005 ARD_ValidateAddressPrompt
         AddTestAddress('user', addressline1, addressline2, city, state, country, postalCode);
     end;
 
+    /// <summary>
     /// Adds a test address to the 'addresses' array within the ExistingAddresses JsonObject.
     /// If the 'addresses' array does not exist, it is created.
     /// The address details are provided as parameters and added as a JsonObject to the array.
