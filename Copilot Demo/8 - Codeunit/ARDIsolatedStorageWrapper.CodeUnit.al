@@ -10,9 +10,12 @@ codeunit 50002 ARD_IsolatedStorageWrapper
         IsolatedStorageUseManagedResources: Label 'CopilotUseManagedResources', Locked = true;
         IsolatedStorageAOAIAccountName: Label 'AOAIAccountName', Locked = true;
 
-    procedure GetSecretKey() SecretKey: Text
+   procedure GetSecretKey() SecretKey: SecretText
+    var
+        BlankSecret: SecretText;
     begin
-        if IsolatedStorage.Get(IsolatedStorageSecretKeyKey, SecretKey) = false then SecretKey := '';
+        BlankSecret := SecretStrSubstNo('');
+        if IsolatedStorage.Get(IsolatedStorageSecretKeyKey, SecretKey) = false then SecretKey := BlankSecret;
     end;
 
     procedure GetDeployment() Deployment: Text
