@@ -41,6 +41,15 @@ pageextension 50003 ARD_SalesInvoice extends "Sales Invoice"
         ResolutionNotes := GetRichText();
     end;
 
+    /// <summary>
+    /// Retrieves the rich text value from the ARD_ResolutionNote BLOB field of the current record.
+    /// </summary>
+    /// <returns>
+    /// The text content extracted from the ARD_ResolutionNote field, using UTF-16 encoding and line feed as separator.
+    /// </returns>
+    /// <remarks>
+    /// Utilizes the "Type Helper" codeunit to read the BLOB as text and handle any field-specific errors.
+    /// </remarks>
     procedure GetRichText(): Text
     var
         TypeHelper: Codeunit "Type Helper";
@@ -53,6 +62,14 @@ pageextension 50003 ARD_SalesInvoice extends "Sales Invoice"
         exit(TextValue);
     end;
 
+    /// <summary>
+    /// Sets the rich text value for the ARD_ResolutionNote field of the current record.
+    /// </summary>
+    /// <param name="NewValue">The new text value to be written as rich text.</param>
+    /// <remarks>
+    /// This procedure creates an OutStream for the ARD_ResolutionNote BLOB field using UTF-16 encoding,
+    /// writes the provided text to the stream, and then modifies the record to save the changes.
+    /// </remarks>
     procedure SetRichText(NewValue: Text)
     var
         oStream: OutStream;
