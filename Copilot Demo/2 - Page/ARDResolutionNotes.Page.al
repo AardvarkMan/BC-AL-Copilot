@@ -13,6 +13,7 @@ page 50006 ARD_ResolutionNotes
             {
                 field(ARD_Note; Rec.ARD_Note)
                 {
+                    MultiLine = true;
                 }
             }
         }

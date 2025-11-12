@@ -5,7 +5,7 @@ page 50000 ARD_CopilotSettings
     PageType = Card;
     UsageCategory = Administration;
     SourceTable = "Integer";
-    
+
     layout
     {
         area(Content)
@@ -52,7 +52,7 @@ page 50000 ARD_CopilotSettings
                     ApplicationArea = All;
                     Caption = 'Deployment';
                     ToolTip = 'Enter the deployment name for the Copilot service.';
-                    
+
                     trigger OnValidate()
                     begin
                         IsolatedStorageWrapper.SetDeployment(Deployment);
@@ -63,24 +63,25 @@ page 50000 ARD_CopilotSettings
                     ApplicationArea = All;
                     Caption = 'API Key';
                     ToolTip = 'Enter the API key for the Copilot service.';
+                    MaskType = Concealed;
                     trigger OnValidate()
                     begin
                         IsolatedStorageWrapper.SetSecretKey(UserAPIKey);
                     end;
                 }
-                
+
             }
         }
     }
 
     var
-    AccountName: Text;
-    Endpoint: Text;
-    Deployment: Text;
-    UserAPIKey: Text;
-    UseManagedResources: Boolean;
-    IsolatedStorageWrapper: Codeunit ARD_IsolatedStorageWrapper;
-    
+        AccountName: Text;
+        Endpoint: Text;
+        Deployment: Text;
+        UserAPIKey: Text;
+        UseManagedResources: Boolean;
+        IsolatedStorageWrapper: Codeunit ARD_IsolatedStorageWrapper;
+
     trigger OnAfterGetRecord()
     begin
         UserAPIKey := '*****';
