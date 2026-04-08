@@ -59,6 +59,37 @@ codeunit 60000 ARD_CashFlowAgentSetup
         CurrentModuleInfo: ModuleInfo;
     begin
         NavApp.GetCurrentModuleInfo(CurrentModuleInfo);
+        Agent.PopulateDefaultProfile(DefaultProfileTok, CurrentModuleInfo.Id, TempAllProfile);
+    end;
+
+    procedure GetDefaultAccessControls(var TempAccessControlBuffer: Record "Access Control Buffer" temporary)
+    var
+        CurrentModuleInfo: ModuleInfo;
+    begin
+        NavApp.GetCurrentModuleInfo(CurrentModuleInfo);
+        Clear(TempAccessControlBuffer);
+        TempAccessControlBuffer."Company Name" := CopyStr(CompanyName(), 1, MaxStrLen(TempAccessControlBuffer."Company Name"));
+        TempAccessControlBuffer.Scope := TempAccessControlBuffer.Scope::System;
+        TempAccessControlBuffer."App ID" := CurrentModuleInfo.Id;
+        TempAccessControlBuffer."Role ID" := D365ReadPermissionSetTok;
+        TempAccessControlBuffer.Insert();
+    end;
+
+    var
+        Agent: Codeunit Agent;
+        DefaultProfileTok: Label 'ARD_CashFlowAgent', Locked = true;
+        AgentInitialsLbl: Label 'CF', MaxLength = 4;
+        D365ReadPermissionSetTok: Label 'ARD_CashFlowAgent', Locked = true;
+
+    /* The following two methods are used to set up the default profile and permissions for the agent. In a production scenario, you would likely want to have more control over this process, rather than automatically assigning permissions. This is just for demo purposes to make it easy to get up and running with the agent.
+        This is the code as published in the AL extension samples, but it may need to be updated to use the new agent APIs for setting up profiles and permissions.
+    */
+    /*
+    procedure GetDefaultProfile(var TempAllProfile: Record "All Profile" temporary)
+    var
+        CurrentModuleInfo: ModuleInfo;
+    begin
+        NavApp.GetCurrentModuleInfo(CurrentModuleInfo);
         //This should use the CurrentModuleInfo.Id not the BaseApplicationAppIdTok, but we aren't creating our own profiles, so this should be the base application id.
         Agent.PopulateDefaultProfile(DefaultProfileTok, BaseApplicationAppIdTok, TempAllProfile);
     end;
@@ -111,4 +142,5 @@ codeunit 60000 ARD_CashFlowAgentSetup
         D365PayableAgentPermissionSetTok: Label 'D365 ACC. PAYABLE', Locked = true;
         D365ReceivableAgentPermissionSetTok: Label 'D365 ACC. RECEIVABLE', Locked = true;
         D365AccountantAgentPermissionSetTok: Label 'D365 ACCOUNTANTS', Locked = true;
+    */
 }
